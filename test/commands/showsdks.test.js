@@ -1,52 +1,56 @@
 const TheCommand = require('../../src/commands/showsdks')
 const { stdout } = require('stdout-stderr')
+const simctl = require('simctl')
+const os = require('node:os')
 
 jest.mock('simctl')
-const simctl = require('simctl')
 
-let command
-beforeEach(() => {
-  command = new TheCommand([])
-})
-
-test('showsdks run', function () {
-  const json = fixtureJson('simctl-list.json')
-  simctl.list = jest.fn(() => {
-    return {
-      json
-    }
+describe('showsdks', () => {
+  let command
+  beforeEach(() => {
+    command = new TheCommand([])
   })
 
-  return command.run().then((result) => {
-    expect(result).toMatchObject(json.runtimes)
-    expect(stdout.output).toMatch(fixtureFile('showsdks.txt'))
-  })
-})
+  test('run', function () {
+    const json = fixtureJson('simctl-list.json')
+    simctl.list = jest.fn(() => {
+      return {
+        json
+      }
+    })
 
-// see https://github.com/ios-control/ios-sim/issues/262
-test('showsdks run (coverage for new isAvailable property in runtimes)', function () {
-  const json = fixtureJson('issue-262/simctl-list.json')
-  simctl.list = jest.fn(() => {
-    return {
-      json
-    }
-  })
-
-  return command.run().then((result) => {
-    expect(result).toMatchObject(json.runtimes)
-    expect(stdout.output).toMatch(fixtureFile('issue-262/showsdks.txt'))
-  })
-})
-
-test('showsdks output', function () {
-  const json = fixtureJson('simctl-list.json')
-  simctl.list = jest.fn(() => {
-    return {
-      json
-    }
+    return command.run().then((result) => {
+      expect(result).toMatchObject(json.runtimes)
+      expect(stdout.output).toMatchFixture('showsdks.txt')
+    })
   })
 
-  return command.output().then((result) => {
-    expect(result).toMatch(fixtureFile('showsdks.txt'))
+  // see https://github.com/ios-control/ios-sim/issues/262
+  test('run (coverage for new isAvailable property in runtimes)', function () {
+    const json = fixtureJson('issue-262/simctl-list.json')
+    simctl.list = jest.fn(() => {
+      return {
+        json
+      }
+    })
+
+    return command.run().then((result) => {
+      expect(result).toMatchObject(json.runtimes)
+      expect(stdout.output).toMatchFixture('issue-262/showsdks.txt')
+    })
+  })
+
+  test('output', function () {
+    const json = fixtureJson('simctl-list.json')
+    simctl.list = jest.fn(() => {
+      return {
+        json
+      }
+    })
+
+    return command.output().then((result) => {
+      // the command run log adds an extra newline, so to match the fixture we add a newline (see `run` test)
+      expect(result + os.EOL).toMatchFixture('showsdks.txt')
+    })
   })
 })

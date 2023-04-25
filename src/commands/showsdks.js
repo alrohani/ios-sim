@@ -1,5 +1,6 @@
 const BaseCommand = require('../BaseCommand')
 const simctl = require('simctl')
+const os = require('node:os')
 
 class ShowSdksCommand extends BaseCommand {
   async run () {
@@ -17,11 +18,11 @@ class ShowSdksCommand extends BaseCommand {
       runtimes = list.runtimes
     }
 
-    let output = 'Simulator SDK Roots:\n'
+    let output = `Simulator SDK Roots:${os.EOL}`
     runtimes.forEach(function (runtime) {
       if ((runtime.availability ? (runtime.availability === '(available)') : runtime.isAvailable)) {
-        output += `"${runtime.name}" (${runtime.buildversion})\n`
-        output += '\t(unknown)\n'
+        output += `"${runtime.name}" (${runtime.buildversion})${os.EOL}`
+        output += `\t(unknown)${os.EOL}`
       }
     })
 

@@ -1,6 +1,7 @@
 const BaseCommand = require('../BaseCommand')
 const { getDeviceTypes } = require('../helpers')
 const debug = require('debug')('ios-sim:showdevicetypes')
+const os = require('node:os')
 
 class ShowDeviceTypesCommand extends BaseCommand {
   async run () {
@@ -16,7 +17,7 @@ class ShowDeviceTypesCommand extends BaseCommand {
       devicetypes = getDeviceTypes()
     }
 
-    return devicetypes.join('\n')
+    return devicetypes.join(os.EOL)
   }
 }
 

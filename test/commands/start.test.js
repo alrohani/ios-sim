@@ -11,7 +11,7 @@ beforeEach(() => {
 test('start run', function () {
   const json = fixtureJson('simctl-list.json')
   const deviceType = 'com.apple.CoreSimulator.SimDeviceType.iPhone-SE,iOS 12.1'
-  const availbleDevice = json.devices['iOS 12.1']
+  const availableDevice = json.devices['iOS 12.1']
     .find(({ isAvailable, name }) => isAvailable && name === 'iPhone SE')
 
   simctl.list = jest.fn(() => {
@@ -22,7 +22,7 @@ test('start run', function () {
   simctl.extensions = { start: jest.fn() }
 
   command.argv = ['--devicetypeid', deviceType]
-  return command.run().then((result) => {
-    expect(simctl.extensions.start).toHaveBeenCalledWith(availbleDevice.udid)
+  return command.run().then((_) => {
+    expect(simctl.extensions.start).toHaveBeenCalledWith(availableDevice.udid)
   })
 })

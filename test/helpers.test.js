@@ -86,21 +86,19 @@ describe('findAvailableRuntime', () => {
   })
 
   test('failure', () => {
-    try {
-      __internal.findAvailableRuntime(json, 'iPhone XX')
-    } catch (err) {
-      expect(err.message).toMatch('No available runtimes could be found for "iPhone XX".')
-    }
+    expect(() => __internal.findAvailableRuntime(json, 'iPhone XX'))
+      .toThrow(
+        'No available runtimes could be found for "iPhone XX".'
+      )
   })
 })
 
 describe('getDeviceFromDeviceTypeId', () => {
   test('unknown device', () => {
-    try {
-      __internal.getDeviceFromDeviceTypeId('unknown-device')
-    } catch (err) {
-      expect(err.message).toMatch('Device type "com.apple.CoreSimulator.SimDeviceType.unknown-device" could not be found.')
-    }
+    expect(() => __internal.getDeviceFromDeviceTypeId('unknown-device'))
+      .toThrow(
+        'Device type "com.apple.CoreSimulator.SimDeviceType.unknown-device" could not be found.'
+      )
   })
 
   test('no device', () => {
@@ -117,7 +115,7 @@ describe('getDeviceFromDeviceTypeId', () => {
     expect(device).toMatchObject({ id: 'BAC3ADB2-66B2-41C0-AF0D-8D4D58E2E88A', name: 'iPhone X', runtime: 'iOS 12.1' })
   })
 
-  test('known device, with runtime (has com.apple.CoreSimulator.SimRuntime prefix) ', () => {
+  test('known device, with runtime (has com.apple.CoreSimulator.SimRuntime prefix)', () => {
     const device = __internal.getDeviceFromDeviceTypeId('iPhone-8, 11.3')
     expect(device).toMatchObject({ id: '85D9D9AE-2749-4169-A3DB-94FC9C8EC8F4', name: 'iPhone 8', runtime: 'iOS 11.3' })
   })
@@ -128,11 +126,10 @@ describe('getDeviceFromDeviceTypeId', () => {
   })
 
   test('known device, unknown runtime', () => {
-    try {
-      __internal.getDeviceFromDeviceTypeId('iPhone-X, 4.1')
-    } catch (err) {
-      expect(err.message).toMatch('Device id for device name "iPhone X" and runtime "iOS 4.1" could not be found, or is not available.')
-    }
+    expect(() => __internal.getDeviceFromDeviceTypeId('iPhone-X, 4.1'))
+      .toThrow(
+        'Device id for device name "iPhone X" and runtime "iOS 4.1" could not be found, or is not available.'
+      )
   })
 })
 
