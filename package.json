@@ -39,7 +39,7 @@
     "@oclif/command": "^1.5.18",
     "@oclif/config": "^1.13.3",
     "@oclif/errors": "^1.2.2",
-    "@oclif/plugin-help": "^2.2.1",
+    "@oclif/plugin-help": "^5.2.14",
     "bplist-parser": "^0.2.0",
     "debug": "^4.1.1",
     "nopt": "^4.0.1",
